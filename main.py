@@ -18,8 +18,8 @@ col1, col2 = st.columns(2)
 col1.write(baseDF)
 col2.write(weatherDF)
 
-# Combine the dataframes
-combinedDF = pd.concat([baseDF, weatherDF])
+# Combine the data frames
+combinedDF = pd.merge(baseDF, weatherDF, on="DATE")
 
 st.write(combinedDF)
 
