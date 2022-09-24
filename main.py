@@ -60,7 +60,7 @@ def process(base, weather):
     combinedDF["AVG"] = combinedDF["AVG"].apply(pd.to_numeric)
     combinedDF["AVG"] = combinedDF["AVG"] > 4
    # parse_sky_condition(combinedDF)
-    savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation"]]
+    savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation", "Coverage 1", "Coverage 2", "Coverage 3", "Layer 1", "Layer 2", "Layer 3", "Cloud Height 1", "Cloud Height 2", "Cloud Height 3"]]
     savedDF = savedDF[savedDF["HourlyPrecipitation"] != "T"]
     savedDF = savedDF.fillna(0)
     savedDF["HourlyPrecipitation"] = savedDF["HourlyPrecipitation"].map(lambda x: str(x).lstrip('+-').rstrip('aAbBcC'))
@@ -69,7 +69,8 @@ def process(base, weather):
 #Download data
 training = process("./data/prod_data_2022_train.csv", "./data/Parsed_Hourly_Weather_Data_Train.csv")
 with st.expander("Training Table"):
-    st.table(training)
+    # st.table(training)
+    st.write()
 training.to_csv("./training.csv")
 st.download_button(label="Download training", data=training.to_csv().encode('utf-8'))
 testing = process("./data/prod_data_202207_test.csv", "./data/hourly_weather_data_202207_test.csv")
