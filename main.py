@@ -6,7 +6,38 @@ st.image("./Code Busters Logo.png", width = 200)
 st.header("AI4Good Hackathon")
 st.subheader("Problem 2: Solar Power Generation")
 
+# TODO: Split sky conditions into 3 parts with a column name for each
+def parse_sky_condition(df):
+   newDF = pd.DataFrame()
+   newDF["sky_condition"] = []
+   newDF["sky_cloud_height"] = []
+   for line in df["HourlySkyConditions"]:
 
+        cloudLayers = str(line).split(" ")
+        st.write(cloudLayers)
+        try:
+            cloudLayer = cloudLayers[0].split(":")
+            newDF["sky_condition"] = cloudLayer[0]
+            newDF["sky_cloud_height"] = cloudLayer[1]
+            
+        except:
+            st.write()
+        try:
+            cloudLayer = cloudLayers[1].split(":")
+            newDF["sky_condition"] = cloudLayer[0]
+            newDF["sky_cloud_height"] = cloudLayer[1]
+           
+        except:
+            st.write()
+        try:
+            cloudLayer = cloudLayers[2].split(":")
+            newDF["sky_condition"] = cloudLayer[0]
+            newDF["sky_cloud_height"] = cloudLayer[1]
+        except:
+            st.write()
+                
+   st.write(newDF["sky_cloud_height"])      
+       
 def process(base, weather):
     # get dfs 
     baseDF = pd.read_csv(base)
@@ -28,7 +59,7 @@ def process(base, weather):
 
     combinedDF["AVG"] = combinedDF["AVG"].apply(pd.to_numeric)
     combinedDF["AVG"] = combinedDF["AVG"] > 4
-
+    parse_sky_condition(combinedDF)
     savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation"]]
     savedDF = savedDF[savedDF["HourlyPrecipitation"] != "T"]
     savedDF = savedDF.fillna(0)
