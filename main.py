@@ -10,11 +10,12 @@ st.subheader("AI4Good Hackathon text")
 baseDF = pd.read_csv("./data/prod_data_202207_test.csv")
 weatherDF = pd.read_csv("./data/hourly_weather_data_202207_test.csv")
 baseDF = baseDF.rename(columns = {'LDate': "DATE"})
-
+baseDF["DATEML"] = pd.to_datetime(baseDF["DATE"]).dt.date
 # Format date columns
 baseDF["HOUR"] = pd.to_datetime(baseDF["DATE"]).dt.hour
 baseDF["DATE"] = pd.to_datetime(baseDF["DATE"]).dt.date
 
+weatherDF["DATEML"] = pd.to_datetime(weatherDF["DATE"]).dt.date
 weatherDF["HOUR"] = pd.to_datetime(weatherDF["DATE"]).dt.hour
 weatherDF["DATE"] = pd.to_datetime(weatherDF["DATE"]).dt.date
 
