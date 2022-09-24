@@ -4,7 +4,7 @@ import streamlit as st
 # Add headers
 st.image("./CodeBusters.png", width = 200)
 st.header("AI4Good Hackathon")
-st.subheader("AI4Good Hackathon text")
+st.subheader("Problem 2: Solar Power Generation")
 
 
 def process(base, weather):
@@ -23,24 +23,27 @@ def process(base, weather):
 
     baseDF["AVG"] = baseDF[["Jax Solar", "NW Jax"]].mean(axis = "columns")
 
-    col1, col2 = st.columns(2)
-    col1.write(baseDF)
-    col2.write(weatherDF)
-
-
     # Combine the data frames
     combinedDF = pd.merge(baseDF, weatherDF, on=["DATE", "HOUR"])
 
     combinedDF["AVG"] = combinedDF["AVG"].apply(pd.to_numeric)
     combinedDF["AVG"] = combinedDF["AVG"] > 4
 
-    st.write(combinedDF["AVG"])
+    savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation"]]
+    savedDF = savedDF[savedDF["HourlyPrecipitation"] != "T"]
+    savedDF = savedDF.fillna(0)
+    savedDF["HourlyPrecipitation"] = savedDF["HourlyPrecipitation"].map(lambda x: str(x).lstrip('+-').rstrip('aAbBcC'))
+    return savedDF
 
-    savedf = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation"]]
-    st.table(savedf)
-    savedf = savedf.fillna(0)
-    savedf = savedf[savedf["HourlyPrecipitation"] != "T"]
-    return savedf
+#Download data
+training = process("./data/prod_data_2022_train.csv", "./data/hourly_weather_data_train.csv")
+with st.expander("Training Table"):
+    st.table(training)
+    
+st.download_button("Download training", training.to_csv().encode('utf-8'))
+testing = process("./data/prod_data_202207_test.csv", "./data/hourly_weather_data_202207_test.csv")
 
-process("./data/prod_data_2022_train.csv", "./data/hourly_weather_data_train.csv").to_csv("./train.csv")
-process("./data/prod_data_202207_test.csv", "./data/hourly_weather_data_202207_test.csv").to_csv("./test.csv")
+with st.expander("Testing Table"):
+    st.table(testing)
+
+st.download_button("Download testing", testing.to_csv().encode('utf-8'))
