@@ -58,7 +58,7 @@ def process(base, weather):
     combinedDF = pd.merge(baseDF, weatherDF, on=["DATE", "HOUR"])
 
     combinedDF["AVG"] = combinedDF["AVG"].apply(pd.to_numeric)
-    combinedDF["AVG"] = combinedDF["AVG"] > 4
+    # combinedDF["AVG"] = combinedDF["AVG"] > 4
    # parse_sky_condition(combinedDF)
     savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation", "Coverage 1", "Coverage 2", "Coverage 3", "Layer 1", "Layer 2", "Layer 3", "Cloud Height 1", "Cloud Height 2", "Cloud Height 3"]]
     savedDF = savedDF[savedDF["HourlyPrecipitation"] != "T"]
