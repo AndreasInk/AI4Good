@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st 
 
 # Add headers
-st.image("./CodeBusters.png", width = 200)
+st.image("./Code Busters Logo.png", width = 200)
 st.header("AI4Good Hackathon")
 st.subheader("Problem 2: Solar Power Generation")
 
