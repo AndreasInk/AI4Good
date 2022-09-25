@@ -5,40 +5,8 @@ import streamlit as st
 st.image("./Code Busters Logo.png", width = 200)
 st.header("AI4Good Hackathon")
 st.subheader("Problem 2: Solar Power Generation")
-
-# TODO: Split sky conditions into 3 parts with a column name for each
-def parse_sky_condition(df):
-   newDF = pd.DataFrame()
-   newDF["sky_condition"] = []
-   newDF["sky_cloud_height"] = []
-   for line in df["HourlySkyConditions"]:
-
-        cloudLayers = str(line).split(" ")
-        st.write(cloudLayers)
-        try:
-            cloudLayer = cloudLayers[0].split(":")
-            newDF["sky_condition"] = cloudLayer[0]
-            newDF["sky_cloud_height"] = cloudLayer[1]
-            
-        except:
-            st.write()
-        try:
-            cloudLayer = cloudLayers[1].split(":")
-            newDF["sky_condition"] = cloudLayer[0]
-            newDF["sky_cloud_height"] = cloudLayer[1]
-           
-        except:
-            st.write()
-        try:
-            cloudLayer = cloudLayers[2].split(":")
-            newDF["sky_condition"] = cloudLayer[0]
-            newDF["sky_cloud_height"] = cloudLayer[1]
-        except:
-            st.write()
-                
-   st.write(newDF["sky_cloud_height"])      
        
-def process(base, weather):
+def process(base, weather, isClassification = False):
     # get dfs 
     baseDF = pd.read_csv(base)
     weatherDF = pd.read_csv(weather)
@@ -58,8 +26,9 @@ def process(base, weather):
     combinedDF = pd.merge(baseDF, weatherDF, on=["DATE", "HOUR"])
 
     combinedDF["AVG"] = combinedDF["AVG"].apply(pd.to_numeric)
-    # combinedDF["AVG"] = combinedDF["AVG"] > 4
-   # parse_sky_condition(combinedDF)
+    if isClassification:
+        combinedDF["AVG"] = combinedDF["AVG"] > 4
+   
     savedDF = combinedDF[["DATE", "HOUR", "AVG", "HourlyVisibility", "HourlyPrecipitation", "Coverage 1", "Coverage 2", "Coverage 3", "Layer 1", "Layer 2", "Layer 3", "Cloud Height 1", "Cloud Height 2", "Cloud Height 3"]]
     savedDF = savedDF[savedDF["HourlyPrecipitation"] != "T"]
     savedDF = savedDF.fillna(0)
@@ -69,10 +38,10 @@ def process(base, weather):
 #Download data
 training = process("./data/prod_data_2022_train.csv", "./data/Parsed_Hourly_Weather_Data_Train.csv")
 with st.expander("Training Table"):
-    # st.table(training)
-    st.write()
+    st.table(training)
+    
 training.to_csv("./training.csv")
-st.download_button(label="Download training", data=training.to_csv().encode('utf-8'))
+st.download_button(label="Download training", data= "./training.csv")
 testing = process("./data/prod_data_202207_test.csv", "./data/hourly_weather_data_202207_test.csv")
 
 with st.expander("Testing Table"):
