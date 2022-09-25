@@ -23,14 +23,14 @@ df1.head()
 # In[4]:
 
 
-df1['Layer 1'] = df1['HourlySkyConditions'].str[4:6]
+df1['Layer 1'] = df1['HourlySkyConditions'].str[4:6].replace(":", "")
 df1.head()
 
 
 # In[5]:
 
 
-df1['Cloud Height 1'] = df1['HourlySkyConditions'].str[7:9]
+df1['Cloud Height 1'] = df1['HourlySkyConditions'].str[7:9].replace(":", "")
 df1.head()
 
 
@@ -44,14 +44,14 @@ df1.head()
 # In[7]:
 
 
-df1['Layer 2'] = df1['HourlySkyConditions'].str[14:16]
+df1['Layer 2'] = df1['HourlySkyConditions'].str[14:16].replace(":", "")
 df1.head()
 
 
 # In[9]:
 
 
-df1['Cloud Height 2'] = df1['HourlySkyConditions'].str[17:19]
+df1['Cloud Height 2'] = df1['HourlySkyConditions'].str[17:19].replace(":", "")
 df1.head()
 
 
@@ -65,14 +65,14 @@ df1.head()
 # In[11]:
 
 
-df1['Layer 3'] = df1['HourlySkyConditions'].str[24:26]
+df1['Layer 3'] = df1['HourlySkyConditions'].str[24:26].replace(":", "")
 df1.head()
 
 
 # In[12]:
 
 
-df1['Cloud Height 3'] = df1['HourlySkyConditions'].str[27:29]
+df1['Cloud Height 3'] = df1['HourlySkyConditions'].str[27:29].replace(":", "")
 df1.head()
 
 
